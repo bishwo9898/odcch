@@ -2,13 +2,51 @@
 import React from "react";
 
 export default function Volunteer() {
-  const [submitted, setSubmitted] = React.useState(false);
+  const [status, setStatus] = React.useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [error, setError] = React.useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // For now, just show a success message. Admin integration will come later.
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    setStatus("loading");
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      name: formData.get("name")?.toString().trim() || "",
+      email: formData.get("email")?.toString().trim() || "",
+      country: formData.get("country")?.toString().trim() || "",
+      interest: formData.get("interest")?.toString().trim() || "",
+      dates: formData.get("dates")?.toString().trim() || "",
+      notes: formData.get("notes")?.toString().trim() || "",
+    };
+
+    try {
+      const res = await fetch("/api/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus("success");
+        e.currentTarget.reset();
+        setTimeout(() => setStatus("idle"), 5000);
+        return;
+      }
+
+      const msg =
+        data.error || "Unable to submit application. Please try again.";
+      setError(msg);
+      setStatus("error");
+    } catch (err) {
+      console.error("Volunteer form submit failed", err);
+      setError("Network issue — please try again.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -70,8 +108,8 @@ export default function Volunteer() {
               <ul className="mt-3 text-sm">
                 <li>
                   Email:{" "}
-                  <a href="mailto:info@odcch.com" className="underline">
-                    info@odcch.com
+                  <a href="mailto:info@odcch.org" className="underline">
+                    info@odcch.org
                   </a>
                 </li>
                 <li>
@@ -159,18 +197,21 @@ export default function Volunteer() {
               <button
                 type="submit"
                 className="w-full inline-flex h-10 items-center justify-center rounded-md bg-amber-500 px-4 text-white font-medium"
+                disabled={status === "loading"}
               >
-                Apply to Volunteer
+                {status === "loading" ? "Submitting..." : "Apply to Volunteer"}
               </button>
-              {submitted && (
+              {status === "success" && (
                 <div className="text-sm text-green-700">
-                  Thank you — your application has been noted. We'll contact you
-                  soon.
+                  Thank you — your application has been received. We'll contact
+                  you soon.
                 </div>
               )}
+              {status === "error" && error && (
+                <div className="text-sm text-red-700">{error}</div>
+              )}
               <p className="text-xs opacity-70">
-                Applications are stored locally for now. Admin panel integration
-                will enable management and follow-up.
+                Applications are sent to our team at info@odcch.org for review.
               </p>
             </form>
           </aside>

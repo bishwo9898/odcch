@@ -2,12 +2,50 @@
 import React from "react";
 
 export default function Contact() {
-  const [sent, setSent] = React.useState(false);
+  const [status, setStatus] = React.useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [error, setError] = React.useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
+    setStatus("loading");
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      name: formData.get("name")?.toString().trim() || "",
+      phone: formData.get("phone")?.toString().trim() || "",
+      email: formData.get("email")?.toString().trim() || "",
+      subject: formData.get("subject")?.toString().trim() || "",
+      message: formData.get("message")?.toString().trim() || "",
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus("success");
+        e.currentTarget.reset();
+        setTimeout(() => setStatus("idle"), 5000);
+        return;
+      }
+
+      // Handle error response
+      const msg = data.error || "Unable to send message. Please try again.";
+      setError(msg);
+      setStatus("error");
+    } catch (err) {
+      console.error("Contact form submit failed", err);
+      setError("Network issue — please try again.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -31,8 +69,8 @@ export default function Contact() {
               <h3 className="text-lg font-semibold">Contact details</h3>
               <p className="mt-2 text-sm opacity-90">
                 Email:{" "}
-                <a href="mailto:info@odcch.com" className="underline">
-                  info@odcch.com
+                <a href="mailto:info@odcch.org" className="underline">
+                  info@odcch.org
                 </a>
               </p>
               <p className="mt-1 text-sm opacity-90">
@@ -154,19 +192,23 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-amber-500 px-4 text-white font-medium"
+                  disabled={status === "loading"}
                 >
-                  Send message
+                  {status === "loading" ? "Sending..." : "Send message"}
                 </button>
-                {sent && (
+                {status === "success" && (
                   <div className="text-sm text-green-700">
-                    Thanks — we'll contact you soon.
+                    Thanks — we received your message and will contact you soon.
                   </div>
+                )}
+                {status === "error" && error && (
+                  <div className="text-sm text-red-700">{error}</div>
                 )}
               </div>
 
               <p className="text-xs opacity-70">
-                We store messages locally for now. Integration with our admin
-                panel will be available soon.
+                Messages are delivered to our team at info@odcch.org so we can
+                respond promptly.
               </p>
             </form>
           </main>

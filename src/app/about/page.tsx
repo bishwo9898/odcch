@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "About — Om Disabled Child Care Home (ODCCH)",
@@ -10,7 +11,7 @@ export default function About() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="section bg-gradient-to-b from-blue-50 to-white">
+      <section className="section bg-linear-to-b from-blue-50 to-white">
         <div className="container max-w-4xl text-center">
           <p className="eyebrow">About Us</p>
           <h1 className="text-4xl sm:text-5xl font-bold mt-2">
@@ -35,7 +36,7 @@ export default function About() {
                   organization based in Kathmandu, Nepal. We are dedicated to
                   providing care, shelter, medical support, and a safe living
                   environment for children with physical and mental
-                  disabilities, including cerebral palsy.
+                  disabilities.
                 </p>
                 <p>
                   The children we support are often orphaned, abandoned, or come
@@ -66,23 +67,14 @@ export default function About() {
 
             <div className="order-first md:order-last">
               <div className="card p-0 overflow-hidden shadow-lg">
-                <div className="bg-gradient-to-br from-slate-100 to-slate-200 h-80 flex items-center justify-center">
-                  <div className="text-center text-slate-500">
-                    <svg
-                      className="w-16 h-16 mx-auto mb-3 opacity-40"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium">Photo: Our Home</p>
-                  </div>
+                <div className="relative h-80 w-full bg-slate-100">
+                  <Image
+                    src="/images/children.jpg"
+                    alt="Children at ODCCH"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -104,24 +96,21 @@ export default function About() {
           <div className="grid md:grid-cols-5 gap-8 items-start mb-12">
             <div className="md:col-span-2">
               <div className="card p-0 overflow-hidden shadow-lg sticky top-24">
-                <div className="bg-gradient-to-br from-blue-100 to-blue-200 h-72 flex items-center justify-center">
-                  <div className="text-center text-blue-600">
-                    <svg
-                      className="w-20 h-20 mx-auto mb-3 opacity-40"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium">Photo: Ratna Kala Oli</p>
-                    <p className="text-xs mt-1 opacity-75">Founder</p>
+                <div className="relative h-72 w-full bg-slate-50">
+                  <div className="absolute inset-2">
+                    <Image
+                      src="/images/ratna-kala-oli.png"
+                      alt="Founder Ratna Kala Oli embracing her son"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                      className="object-contain rounded-md"
+                      priority
+                    />
                   </div>
+                </div>
+                <div className="px-4 py-3 border-t bg-white">
+                  <p className="text-sm font-medium">Photo: Ratna Kala Oli</p>
+                  <p className="text-xs opacity-75">Founder</p>
                 </div>
               </div>
             </div>
@@ -177,23 +166,14 @@ export default function About() {
 
             <div className="md:col-span-2">
               <div className="card p-0 overflow-hidden shadow-lg">
-                <div className="bg-gradient-to-br from-green-100 to-green-200 h-64 flex items-center justify-center">
-                  <div className="text-center text-green-600">
-                    <svg
-                      className="w-16 h-16 mx-auto mb-3 opacity-40"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium">Photo: Our Facility</p>
-                  </div>
+                <div className="relative h-64 w-full bg-slate-100">
+                  <Image
+                    src="/images/santaodcch.jpg"
+                    alt="ODCCH Facility and Community"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -395,7 +375,7 @@ export default function About() {
 
               <div className="mt-8 space-y-6">
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-blue-600"
                       fill="none"
@@ -419,7 +399,7 @@ export default function About() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-green-600"
                       fill="none"
@@ -443,7 +423,7 @@ export default function About() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-amber-600"
                       fill="none"
@@ -467,7 +447,7 @@ export default function About() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-purple-600"
                       fill="none"
@@ -498,7 +478,7 @@ export default function About() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-rose-600"
                       fill="none"
@@ -525,25 +505,14 @@ export default function About() {
 
             <div>
               <div className="card p-0 overflow-hidden shadow-xl">
-                <div className="bg-gradient-to-br from-purple-100 to-purple-200 h-96 flex items-center justify-center">
-                  <div className="text-center text-purple-600">
-                    <svg
-                      className="w-20 h-20 mx-auto mb-3 opacity-40"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium">
-                      Photo: Our Team & Values
-                    </p>
-                  </div>
+                <div className="relative h-96 w-full bg-slate-100">
+                  <Image
+                    src="/images/santa2.jpg"
+                    alt="ODCCH Team and Community Values"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </div>
