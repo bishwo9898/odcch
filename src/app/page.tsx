@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import HeroCarousel from "../components/HeroCarousel";
 
 export default function Home() {
@@ -86,11 +87,15 @@ export default function Home() {
           </div>
 
           <div className="card p-0 overflow-hidden">
-            <img
-              src="/images/about.jpg"
-              alt="Children and caregiver"
-              className="w-full h-64 object-cover"
-            />
+            <div className="relative h-64 w-full bg-slate-100">
+              <Image
+                src="/images/children.jpg"
+                alt="Children and caregiver at ODCCH"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -225,26 +230,42 @@ export default function Home() {
             Life at Om Disabled Child Care Home
           </h2>
           <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <img
-              src="/images/photo1.jpg"
-              alt="therapy session"
-              className="w-full h-40 object-cover rounded"
-            />
-            <img
-              src="/images/photo2.jpg"
-              alt="learning"
-              className="w-full h-40 object-cover rounded"
-            />
-            <img
-              src="/images/photo3.jpg"
-              alt="play"
-              className="w-full h-40 object-cover rounded"
-            />
-            <img
-              src="/images/photo4.jpg"
-              alt="community"
-              className="w-full h-40 object-cover rounded"
-            />
+            <div className="relative h-40 w-full rounded overflow-hidden">
+              <Image
+                src="/images/children.jpg"
+                alt="Children at ODCCH"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="relative h-40 w-full rounded overflow-hidden">
+              <Image
+                src="/images/santaodcch.jpg"
+                alt="Community activities"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="relative h-40 w-full rounded overflow-hidden">
+              <Image
+                src="/images/santa2.jpg"
+                alt="Therapy and care"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="relative h-40 w-full rounded overflow-hidden">
+              <Image
+                src="/images/ratna-kala-oli.png"
+                alt="Founder and team"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>

@@ -9,10 +9,10 @@ type Props = {
 
 export default function HeroCarousel({
   images = [
-    "/images/hero1.jpg",
-    "/images/hero2.jpg",
-    "/images/hero3.jpg",
-    "/images/hero4.jpg",
+    "/images/children.jpg",
+    "/images/santaodcch.jpg",
+    "/images/santa2.jpg",
+    "/images/ratna-kala-oli.png",
   ],
   intervalMs = 6000,
   children,
@@ -42,7 +42,7 @@ export default function HeroCarousel({
         ))}
       </div>
 
-      <div className="hero-overlay absolute inset-0 bg-gradient-to-b from-black/30 to-white/0" />
+      <div className="hero-overlay absolute inset-0 bg-linear-to-b from-black/30 to-white/0" />
 
       <div className="container relative z-20 py-24">
         <div className="max-w-3xl">{children}</div>

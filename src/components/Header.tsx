@@ -21,12 +21,12 @@ export default function Header() {
           >
             About
           </Link>
-          <Link
+          {/* <Link
             href="/children"
             className="text-sm text-[var(--foreground)] hover:text-[var(--brand-strong)]"
           >
             Children
-          </Link>
+          </Link> */}
           <Link
             href="/volunteer"
             className="text-sm text-[var(--foreground)] hover:text-[var(--brand-strong)]"
