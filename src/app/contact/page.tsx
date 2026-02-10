@@ -28,9 +28,18 @@ export default function Contact() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const raw = await res.text();
+      let data: { success?: boolean; error?: string } | null = null;
 
-      if (res.ok && data.success) {
+      if (raw) {
+        try {
+          data = JSON.parse(raw) as { success?: boolean; error?: string };
+        } catch {
+          data = null;
+        }
+      }
+
+      if (res.ok && (data?.success ?? true)) {
         setStatus("success");
         e.currentTarget.reset();
         setTimeout(() => setStatus("idle"), 5000);
@@ -38,7 +47,7 @@ export default function Contact() {
       }
 
       // Handle error response
-      const msg = data.error || "Unable to send message. Please try again.";
+      const msg = data?.error || "Unable to send message. Please try again.";
       setError(msg);
       setStatus("error");
     } catch (err) {
@@ -225,7 +234,7 @@ export default function Contact() {
               <iframe
                 title="ODCCH location"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  "Om Disabled Child Care Home"
+                  "Om Disabled Child Care Home",
                 )}&output=embed`}
                 width="100%"
                 height="100%"

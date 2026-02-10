@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Header() {
@@ -6,12 +7,18 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <span
-            className="inline-block h-9 w-9 rounded-md bg-[var(--brand)]/90"
-            aria-hidden="true"
-          />
+          <span className="relative h-10 w-10">
+            <Image
+              src="/images/bgodcch.png"
+              alt="ODCCH logo"
+              fill
+              sizes="40px"
+              className="object-contain"
+              priority
+            />
+          </span>
           <span className="text-lg font-semibold">
-            Om Disabled Child Care Home (ODCCH)
+            Om Disabled Child Care Home
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">

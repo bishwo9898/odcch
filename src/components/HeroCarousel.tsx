@@ -8,12 +8,7 @@ type Props = {
 };
 
 export default function HeroCarousel({
-  images = [
-    "/images/children.jpg",
-    "/images/santaodcch.jpg",
-    "/images/santa2.jpg",
-    "/images/ratna-kala-oli.png",
-  ],
+  images = ["/images/group.jpeg"],
   intervalMs = 6000,
   children,
 }: Props) {
@@ -22,7 +17,7 @@ export default function HeroCarousel({
   React.useEffect(() => {
     const t = setInterval(
       () => setIndex((i) => (i + 1) % images.length),
-      intervalMs
+      intervalMs,
     );
     return () => clearInterval(t);
   }, [images.length, intervalMs]);
