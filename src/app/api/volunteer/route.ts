@@ -9,9 +9,27 @@ function buildTransport() {
   const fromAddress = process.env.SMTP_FROM || user;
   const toAddress = process.env.VOLUNTEER_TO || process.env.CONTACT_TO || "info@odcch.org";
 
+  // Log configuration status (without sensitive data)
+  console.log("Volunteer email config check:", {
+    hasHost: !!host,
+    hasPort: !!port,
+    hasUser: !!user,
+    hasPass: !!pass,
+    hasFrom: !!fromAddress,
+    toAddress,
+  });
+
   if (!host || !port || !user || !pass || !fromAddress || !toAddress) {
+    const missing = [];
+    if (!host) missing.push("SMTP_HOST");
+    if (!port) missing.push("SMTP_PORT");
+    if (!user) missing.push("SMTP_USER");
+    if (!pass) missing.push("SMTP_PASS");
+    if (!fromAddress) missing.push("SMTP_FROM");
+    if (!toAddress) missing.push("VOLUNTEER_TO or CONTACT_TO");
+    
     throw new Error(
-      "Email is not configured. Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_FROM."
+      `Email is not configured. Missing: ${missing.join(", ")}. Please add these environment variables in Vercel.`
     );
   }
 
@@ -61,7 +79,23 @@ export async function POST(req: Request) {
     }
 
     const { data } = validation;
-    const { transporter, fromAddress, toAddress } = buildTransport();
+    
+    let transportConfig;
+    try {
+      transportConfig = buildTransport();
+    } catch (configError) {
+      console.error("Transport configuration error:", configError);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Email service is not configured. Please contact the administrator.",
+          details: process.env.NODE_ENV === 'development' ? String(configError) : undefined
+        },
+        { status: 503 }
+      );
+    }
+
+    const { transporter, fromAddress, toAddress } = transportConfig;
 
     const textBody = `NEW VOLUNTEER APPLICATION
 
@@ -88,7 +122,9 @@ ${data.notes || "None provided"}
       </div>
     `;
 
-    await transporter.sendMail({
+    console.log("Attempting to send volunteer email to:", toAddress);
+
+    const info = await transporter.sendMail({
       from: `ODCCH Website <${fromAddress}>`,
       replyTo: data.email,
       to: toAddress,
@@ -97,11 +133,22 @@ ${data.notes || "None provided"}
       html: htmlBody,
     });
 
+    console.log("Volunteer email sent successfully:", info.messageId);
+
     return NextResponse.json({ success: true, message: "Application submitted successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Volunteer form send failed", error);
+    console.error("Volunteer form send failed:", error);
+    
+    // Provide more detailed error information
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("Error details:", errorMessage);
+    
     return NextResponse.json(
-      { success: false, error: "Unable to submit application right now. Please try again later." },
+      { 
+        success: false, 
+        error: "Unable to submit application right now. Please try again later.",
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      },
       { status: 500 }
     );
   }
