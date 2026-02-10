@@ -29,9 +29,18 @@ export default function Volunteer() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const raw = await res.text();
+      let data: { success?: boolean; error?: string } | null = null;
 
-      if (res.ok && data.success) {
+      if (raw) {
+        try {
+          data = JSON.parse(raw) as { success?: boolean; error?: string };
+        } catch {
+          data = null;
+        }
+      }
+
+      if (res.ok && (data?.success ?? true)) {
         setStatus("success");
         e.currentTarget.reset();
         setTimeout(() => setStatus("idle"), 5000);
@@ -39,7 +48,7 @@ export default function Volunteer() {
       }
 
       const msg =
-        data.error || "Unable to submit application. Please try again.";
+        data?.error || "Unable to submit application. Please try again.";
       setError(msg);
       setStatus("error");
     } catch (err) {
